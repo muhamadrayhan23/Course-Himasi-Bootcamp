@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himasi Bootcamp Web Programming</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-[Inter]">
+    <header
+        class="topbar bg-emerald-600 text-white px-5 py-4 flex justify-between items-center sticky top-0 z-50 shadow">
+        <div class="brand">
+            <div class="logo">&lt;/&gt;</div>
+            <div>
+                <h1>Bootcamp Web Programming</h1>
+                <p>Himasi Bootcamp Web Programming</p>
+            </div>
+        </div>
+        <button id="menuBtn" class="menu-btn">☰</button>
+    </header>
+    <div class="layout">
+        <aside class="sidebar bg-white border-r border-slate-200 p-5" id="sidebar">
+            <a href="#intro">Intro</a>
+            <a href="#html-tags">HTML Tags</a>
+            <a href="#lists">HTML Lists</a>
+            <a href="#tables">HTML Tables</a>
+            <a href="#forms">HTML Forms</a>
+            <a href="#semantic">Semantic HTML</a>
+            <a href="#media">HTML Media</a>
+            <a href="#css-selectors">CSS Selectors</a>
+            <a href="#colors">CSS Colors</a>
+            <a href="#box-model">Box Model</a>
+            <a href="#position">Position</a>
+            <a href="#flexbox">Flexbox</a>
+            <a href="#grid">Grid</a>
+            <a href="#responsive">Responsive</a>
+        </aside>
+
+        <main class="content p-6 space-y-5">
+            <section id="intro">
+                <h2>Introduction</h2>
+                <p>HTML digunakan untuk struktur halaman web, CSS digunakan untuk styling.</p>
+                <pre><code>&lt;h1&gt;Hello World&lt;/h1&gt;</code></pre>
+                <div class="editor">
+                    <textarea class="code-input">&lt;h1&gt;Hello World&lt;/h1&gt;</textarea>
+                    <iframe class="preview"></iframe>
+                </div>
+            </section>
+
+            <section id="html-tags">
+                <h2>HTML Tags</h2>
+                <p>Tag umum: heading, paragraph, link, image.</p>
+                <pre><code>&lt;a href="#"&gt;Klik Saya&lt;/a&gt;</code></pre>
+                <div class="editor">
+                    <textarea class="code-input">&lt;a href="#"&gt;Klik Saya&lt;/a&gt;</textarea>
+                    <iframe class="preview"></iframe>
+                </div>
+            </section>
+
+            <section id="lists">
+                <h2>HTML Lists</h2>
+                <p>Membuat daftar berurutan dan tidak berurutan.</p>
+                <pre><code>&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;</code></pre>
+                <div class="editor"><textarea
+                        class="code-input">&lt;ul&gt;&lt;li&gt;Apel&lt;/li&gt;&lt;li&gt;Mangga&lt;/li&gt;&lt;/ul&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="tables">
+                <h2>HTML Tables</h2>
+                <p>Tabel digunakan menampilkan data.</p>
+                <pre><code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;A&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code></pre>
+                <div class="editor"><textarea
+                        class="code-input">&lt;table border='1'&gt;&lt;tr&gt;&lt;td&gt;A&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="forms">
+                <h2>HTML Forms</h2>
+                <p>Form untuk input data user.</p>
+                <pre><code>&lt;input placeholder='Nama'&gt;</code></pre>
+                <div class="editor"><textarea
+                        class="code-input">&lt;input placeholder='Nama'&gt; &lt;button&gt;Kirim&lt;/button&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="semantic">
+                <h2>Semantic HTML</h2>
+                <p>Gunakan header, main, footer.</p>
+                <pre><code>&lt;header&gt;Header&lt;/header&gt;</code></pre>
+                <div class="editor"><textarea
+                        class="code-input">&lt;header&gt;Header&lt;/header&gt;&lt;main&gt;Content&lt;/main&gt;&lt;footer&gt;Footer&lt;/footer&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="media">
+                <h2>HTML Media</h2>
+                <p>Tambahkan audio dan video.</p>
+                <pre><code>&lt;video controls&gt;&lt;/video&gt;</code></pre>
+                <div class="editor"><textarea
+                        class="code-input">&lt;video controls width='220'&gt;&lt;/video&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="css-selectors">
+                <h2>CSS Selectors</h2>
+                <p>Gunakan selector untuk memilih elemen.</p>
+                <pre><code>&lt;style&gt;h1{color:tomato;}&lt;/style&gt;
+&lt;h1&gt;Judul&lt;/h1&gt;</code></pre>
+                <div class="editor">
+                    <textarea class="code-input">&lt;style&gt;h1{color:tomato;}&lt;/style&gt;
+&lt;h1&gt;Judul&lt;/h1&gt;</textarea>
+                    <iframe class="preview"></iframe>
+                </div>
+            </section>
+
+            <section id="colors">
+                <h2>CSS Colors</h2>
+                <p>Atur warna elemen.</p>
+                <pre><code>&lt;style&gt;h1{color:red}&lt;/style&gt;</code></pre>
+                <div class="editor"><textarea
+                        class="code-input">&lt;style&gt;h1{color:red}&lt;/style&gt;&lt;h1&gt;Hello&lt;/h1&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="box-model">
+                <h2>Box Model</h2>
+                <p>Margin, border, padding.</p>
+                <pre><code>padding:20px;</code></pre>
+                <div class="editor"><textarea
+                        class="code-input">&lt;style&gt;div{padding:20px;background:#f59e0b}&lt;/style&gt;&lt;div&gt;Box&lt;/div&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="position">
+                <h2>CSS Position</h2>
+                <p>Relative dan absolute.</p>
+                <pre><code>position:relative;</code></pre>
+                <div class="editor"><textarea
+                        class="code-input">&lt;style&gt;div{position:relative;left:30px;background:#0ea5e9;color:#fff;padding:20px}&lt;/style&gt;&lt;div&gt;Move&lt;/div&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="flexbox">
+                <h2>Flexbox</h2>
+                <p>Flexbox memudahkan layout horizontal dan vertikal.</p>
+                <pre><code>&lt;style&gt;.wrap{display:flex;gap:10px}.box{background:#0ea5e9;color:#fff;padding:20px}&lt;/style&gt;</code></pre>
+                <div class="editor">
+                    <textarea class="code-input">&lt;style&gt;.wrap{display:flex;gap:10px}.box{background:#0ea5e9;color:#fff;padding:20px}&lt;/style&gt;
+&lt;div class='wrap'&gt;&lt;div class='box'&gt;1&lt;/div&gt;&lt;div class='box'&gt;2&lt;/div&gt;&lt;/div&gt;</textarea>
+                    <iframe class="preview"></iframe>
+                </div>
+            </section>
+            <section id="grid">
+                <h2>CSS Grid</h2>
+                <p>Layout berbasis kolom.</p>
+                <div class="editor"><textarea
+                        class="code-input">&lt;style&gt;.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}.b{background:#8b5cf6;color:#fff;padding:20px}&lt;/style&gt;&lt;div class='g'&gt;&lt;div class='b'&gt;1&lt;/div&gt;&lt;div class='b'&gt;2&lt;/div&gt;&lt;/div&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+            <section id="responsive">
+                <h2>Responsive Design</h2>
+                <p>Gunakan media query.</p>
+                <div class="editor"><textarea
+                        class="code-input">&lt;style&gt;div{background:green;padding:20px}@media(max-width:600px){div{background:red}}&lt;/style&gt;&lt;div&gt;Resize Screen&lt;/div&gt;</textarea><iframe
+                        class="preview"></iframe></div>
+            </section>
+
+            <div class="pager">
+                <button id="prevBtn">← Previous</button>
+                <div class="dots" id="dots"></div>
+                <button id="nextBtn">Next →</button>
+            </div>
+        </main>
+    </div>
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        menuBtn.addEventListener('click', () => sidebar.classList.toggle('show'));
+
+        // Carousel functionality
+        const sections = document.querySelectorAll('.content section');
+        const dotsContainer = document.getElementById('dots');
+        let current = 0;
+
+        // Create dots for each section
+        sections.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.className = 'dot';
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goTo(i));
+            dot.addEventListener('mouseenter', () => dot.classList.add('hover'));
+            dot.addEventListener('mouseleave', () => dot.classList.remove('hover'));
+            dotsContainer.appendChild(dot);
+        });
+
+        function showSection(index) {
+            sections.forEach((section, i) => {
+                section.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        function goTo(i) {
+            if (i < 0 || i >= sections.length) return;
+            current = i;
+            showSection(current);
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar a').forEach((a, idx) => {
+                a.classList.toggle('active', idx === current);
+            });
+        }
+
+        showSection(0);
+
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+
+        // Editor functionality with Run Code and Clear buttons
+        document.querySelectorAll('.editor').forEach(box => {
+            const input = box.querySelector('.code-input');
+            const frame = box.querySelector('.preview');
+
+            // Add buttons to editor
+            const btnContainer = document.createElement('div');
+            btnContainer.className = 'editor-buttons';
+
+            const runBtn = document.createElement('button');
+            runBtn.className = 'run-btn';
+            runBtn.textContent = '▶ Run Code';
+            runBtn.addEventListener('click', () => frame.srcdoc = input.value);
+
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'clear-btn';
+            clearBtn.textContent = '✕ Clear';
+            clearBtn.addEventListener('click', () => {
+                input.value = '';
+                frame.srcdoc = '';
+            });
+
+            btnContainer.appendChild(runBtn);
+            btnContainer.appendChild(clearBtn);
+            box.insertBefore(btnContainer, box.firstChild);
+
+            // Initial render
+            frame.srcdoc = input.value;
+
+            // Update preview on input
+            input.addEventListener('input', () => frame.srcdoc = input.value);
+        });
+
+        // Sidebar click handling
+        const links = [...document.querySelectorAll('.sidebar a')];
+        links.forEach((a, i) => a.addEventListener('click', (e) => {
+            e.preventDefault();
+            goTo(i);
+        }));
+    </script>
+</body>
+
+</html>
