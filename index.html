@@ -1,260 +1,1130 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Himasi Bootcamp Web Programming</title>
+    <title>HIMASI Academy - Laravel Fundamentals</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            darkBg: '#030712',      // Hitam premium pekat
+                            cardBg: '#0F172A',      // Abu-abu biru gelap untuk kontainer
+                            border: '#1E293B',      // Garis batas elegan
+                            laravel: '#FF2D20',     // Laravel Red Signature
+                            accentCyan: '#06B6D4',  // Cyan aksen modern
+                            lightText: '#94A3B8'    // Slate lembut untuk teks sekunder
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Gaya Khusus Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF2D20;
+        }
+
+        /* Animasi Transisi Slide Modul SPA */
+        .slide-transition {
+            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-hidden {
+            opacity: 0;
+            transform: scale(0.98) translateY(10px);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+
+        .slide-active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            position: relative;
+        }
+
+        /* Sidebar active style */
+        .sidebar-active {
+            color: #ffffff !important;
+            background-color: rgba(255, 45, 32, 0.1) !important;
+            border-color: #FF2D20 !important;
+            font-weight: 700;
+        }
+    </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 font-[Inter]">
+<body class="bg-brand-darkBg text-slate-100 font-sans min-h-screen overflow-x-hidden flex flex-col justify-between">
+
+    <!-- TOP HEADER -->
     <header
-        class="topbar bg-emerald-600 text-white px-5 py-4 flex justify-between items-center sticky top-0 z-50 shadow">
-        <div class="brand">
-            <div class="logo">&lt;/&gt;</div>
-            <div>
-                <h1>Bootcamp Web Programming</h1>
-                <p>Himasi Bootcamp Web Programming</p>
+        class="sticky top-0 z-40 bg-brand-darkBg/90 backdrop-blur-md border-b border-brand-border/80 px-4 py-3.5 lg:px-8">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand / Logo -->
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-9 h-9 rounded-xl bg-brand-laravel/10 border border-brand-laravel/30 flex items-center justify-center shadow-lg shadow-brand-laravel/5">
+                    <i class="fa-brands fa-laravel text-brand-laravel text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-display font-extrabold text-sm sm:text-base tracking-wide block">HIMASI BOOTCAMP
+                        2026</span>
+                    <span
+                        class="text-[10px] text-brand-lightText block -mt-1 font-semibold uppercase tracking-widest">Pertemuan
+                        1: Laravel Fundamentals</span>
+                </div>
+            </div>
+
+            <!-- Slide Progress Counter -->
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex flex-col items-end">
+                    <span class="text-[10px] text-brand-lightText font-semibold uppercase tracking-widest">Progres
+                        Belajar</span>
+                    <span id="progress-text" class="text-xs font-bold text-white mt-0.5">Modul 1 dari 8</span>
+                </div>
+                <div class="w-24 sm:w-32 bg-slate-900 h-2 rounded-full overflow-hidden border border-brand-border">
+                    <div id="progress-bar"
+                        class="bg-gradient-to-r from-brand-laravel to-red-500 h-full rounded-full transition-all duration-300"
+                        style="width: 12.5%;"></div>
+                </div>
+
+                <!-- Mobile Navigation Toggle -->
+                <button onclick="toggleSidebarMobile()"
+                    class="md:hidden p-2 rounded-lg bg-slate-900 text-slate-300 border border-brand-border">
+                    <i class="fa-solid fa-list-ul text-sm" id="sidebar-mobile-icon"></i>
+                </button>
             </div>
         </div>
-        <button id="menuBtn" class="menu-btn">☰</button>
     </header>
-    <div class="layout">
-        <aside class="sidebar bg-white border-r border-slate-200 p-5" id="sidebar">
-            <a href="#intro">Intro</a>
-            <a href="#html-tags">HTML Tags</a>
-            <a href="#lists">HTML Lists</a>
-            <a href="#tables">HTML Tables</a>
-            <a href="#forms">HTML Forms</a>
-            <a href="#semantic">Semantic HTML</a>
-            <a href="#media">HTML Media</a>
-            <a href="#css-selectors">CSS Selectors</a>
-            <a href="#colors">CSS Colors</a>
-            <a href="#box-model">Box Model</a>
-            <a href="#position">Position</a>
-            <a href="#flexbox">Flexbox</a>
-            <a href="#grid">Grid</a>
-            <a href="#responsive">Responsive</a>
+
+    <!-- MAIN BODY CONTAINER -->
+    <div class="flex-grow max-w-7xl w-full mx-auto flex flex-col md:flex-row relative">
+
+        <!-- SIDEBAR NAVIGATION (Desktop & Mobile Drawer) -->
+        <aside id="sidebar-nav"
+            class="hidden md:block w-full md:w-64 lg:w-72 shrink-0 md:sticky md:top-[73px] h-[calc(100vh-73px)] border-r border-brand-border/60 bg-brand-darkBg/95 md:bg-transparent z-30 overflow-y-auto p-4 lg:p-6 space-y-2">
+            <div class="text-[10px] text-brand-lightText font-bold uppercase tracking-widest px-3 mb-3">Daftar Modul
+                Belajar</div>
+
+            <nav class="space-y-1 flex flex-col">
+                <button onclick="goToSlide(1)" id="btn-slide-1"
+                    class="w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent flex items-center gap-3">
+                    <span
+                        class="w-5 h-5 rounded-md bg-slate-900 flex items-center justify-center font-mono font-bold text-[10px]">1</span>
+                    <span>Pengertian Laravel</span>
+                </button>
+                <button onclick="goToSlide(2)" id="btn-slide-2"
+                    class="w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent flex items-center gap-3">
+                    <span
+                        class="w-5 h-5 rounded-md bg-slate-900 flex items-center justify-center font-mono font-bold text-[10px]">2</span>
+                    <span>Sejarah Laravel</span>
+                </button>
+                <button onclick="goToSlide(3)" id="btn-slide-3"
+                    class="w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent flex items-center gap-3">
+                    <span
+                        class="w-5 h-5 rounded-md bg-slate-900 flex items-center justify-center font-mono font-bold text-[10px]">3</span>
+                    <span>Tujuan Laravel</span>
+                </button>
+                <button onclick="goToSlide(4)" id="btn-slide-4"
+                    class="w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent flex items-center gap-3">
+                    <span
+                        class="w-5 h-5 rounded-md bg-slate-900 flex items-center justify-center font-mono font-bold text-[10px]">4</span>
+                    <span>Konsep Framework</span>
+                </button>
+                <button onclick="goToSlide(5)" id="btn-slide-5"
+                    class="w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent flex items-center gap-3">
+                    <span
+                        class="w-5 h-5 rounded-md bg-slate-900 flex items-center justify-center font-mono font-bold text-[10px]">5</span>
+                    <span>Arsitektur MVC</span>
+                </button>
+                <button onclick="goToSlide(6)" id="btn-slide-6"
+                    class="w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent flex items-center gap-3">
+                    <span
+                        class="w-5 h-5 rounded-md bg-slate-900 flex items-center justify-center font-mono font-bold text-[10px]">6</span>
+                    <span>Konsep CRUD</span>
+                </button>
+                <button onclick="goToSlide(7)" id="btn-slide-7"
+                    class="w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent flex items-center gap-3">
+                    <span
+                        class="w-5 h-5 rounded-md bg-slate-900 flex items-center justify-center font-mono font-bold text-[10px]">7</span>
+                    <span>Persiapan & Instalasi</span>
+                </button>
+                <button onclick="goToSlide(8)" id="btn-slide-8"
+                    class="w-full text-left px-4 py-3 rounded-xl text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent flex items-center gap-3">
+                    <span
+                        class="w-5 h-5 rounded-md bg-slate-900 flex items-center justify-center font-mono font-bold text-[10px]">8</span>
+                    <span>Kesimpulan & Penutup</span>
+                </button>
+            </nav>
+
+            <!-- COLLABORATORS SECTION -->
+            <div class="pt-6 border-t border-brand-border/40 mt-6 px-3 space-y-3">
+                <div class="text-[10px] text-brand-lightText font-bold uppercase tracking-widest">Kolaborator Sesi</div>
+
+                <!-- Collaborator 1 -->
+                <div class="flex items-center gap-3 p-2.5 rounded-xl bg-brand-cardBg/40 border border-brand-border/60">
+                    <div
+                        class="w-8 h-8 rounded-full bg-brand-laravel/10 flex items-center justify-center text-brand-laravel text-xs font-bold">
+                        MR</div>
+                    <div>
+                        <div class="text-[11px] font-bold text-white">M. Rayhan</div>
+                        <div class="text-[9px] text-brand-lightText">Speaker & Dev</div>
+                    </div>
+                </div>
+
+                <!-- Collaborator 2 -->
+                <div class="flex items-center gap-3 p-2.5 rounded-xl bg-brand-cardBg/40 border border-brand-border/60">
+                    <div
+                        class="w-8 h-8 rounded-full bg-brand-accentCyan/10 flex items-center justify-center text-brand-accentCyan text-xs font-bold">
+                        SN</div>
+                    <div>
+                        <div class="text-[11px] font-bold text-white">Sandi Nazril</div>
+                        <div class="text-[9px] text-brand-lightText">Speaker & Dev</div>
+                    </div>
+                </div>
+            </div>
         </aside>
 
-        <main class="content p-6 space-y-5">
-            <section id="intro">
-                <h2>Introduction</h2>
-                <p>HTML digunakan untuk struktur halaman web, CSS digunakan untuk styling.</p>
-                <pre><code>&lt;h1&gt;Hello World&lt;/h1&gt;</code></pre>
-                <div class="editor">
-                    <textarea class="code-input">&lt;h1&gt;Hello World&lt;/h1&gt;</textarea>
-                    <iframe class="preview"></iframe>
+        <!-- CONTENT SLIDES CONTAINER -->
+        <main class="flex-grow p-4 sm:p-6 lg:p-8 overflow-hidden relative min-h-[calc(100vh-140px)]">
+
+            <!-- 1. SLIDE: PENGERTIAN LARAVEL -->
+            <section id="slide-1" class="slide-transition slide-active space-y-6">
+                <!-- Header Card -->
+                <div
+                    class="p-6 sm:p-8 bg-gradient-to-br from-brand-cardBg to-slate-950 border border-brand-border rounded-3xl relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-laravel/10 rounded-full blur-3xl"></div>
+                    <div
+                        class="flex items-center gap-3 text-brand-laravel text-xs font-bold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Modul 01 / Pengenalan</span>
+                    </div>
+                    <h1 class="font-display font-bold text-3xl sm:text-4xl text-white">Apa Itu Laravel?</h1>
+                    <p class="text-sm text-brand-lightText mt-2 leading-relaxed">
+                        Laravel adalah framework PHP open-source yang digunakan untuk membangun aplikasi web dengan
+                        lebih cepat, terstruktur, dan efisien. Framework ini menyediakan berbagai fitur dasar sehingga
+                        developer tidak perlu menulis modul teknis dari awal.
+                    </p>
+                </div>
+
+                <!-- Core Details Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-5 bg-brand-cardBg/50 border border-brand-border rounded-2xl">
+                        <h3 class="font-bold text-white text-sm mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-screwdriver-wrench text-brand-laravel"></i>
+                            <span>Laravel Membantu Developer</span>
+                        </h3>
+                        <ul class="space-y-2.5 text-xs text-brand-lightText">
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-circle-check text-green-500"></i>Membuat website dengan tempo
+                                lebih cepat</li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-circle-check text-green-500"></i>Mengelola basis data secara
+                                lebih mudah</li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-circle-check text-green-500"></i>Menjaga struktur kode agar tetap
+                                rapi</li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-circle-check text-green-500"></i>Mempermudah proses kolaborasi
+                                dalam tim</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-5 bg-brand-cardBg/50 border border-brand-border rounded-2xl">
+                        <h3 class="font-bold text-white text-sm mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-fire text-orange-500"></i>
+                            <span>Mengapa Laravel Sangat Populer?</span>
+                        </h3>
+                        <ul class="space-y-2.5 text-xs text-brand-lightText">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-star text-yellow-500"></i>Sangat
+                                mudah dipelajari oleh pemula</li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-star text-yellow-500"></i>Dokumentasi panduan resmi yang sangat
+                                lengkap</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-star text-yellow-500"></i>Memiliki
+                                komunitas global yang sangat masif</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-star text-yellow-500"></i>Cocok
+                                untuk skala proyek kecil hingga korporat</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Examples Section -->
+                <div class="p-5 bg-brand-cardBg/30 border border-brand-border rounded-2xl space-y-4">
+                    <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-diagram-project text-brand-accentCyan"></i>
+                        <span>Contoh Kasus Penggunaan Riil</span>
+                    </h3>
+                    <div
+                        class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-[10px] font-bold uppercase tracking-wider">
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">SIAKAD Sekolah</div>
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">E-Commerce</div>
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">Aplikasi Kasir</div>
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">Dashboard Admin</div>
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">Manajemen Gudang</div>
+                    </div>
+                </div>
+
+                <!-- Mini Checkpoint Quiz -->
+                <div class="p-5 bg-brand-laravel/5 border border-brand-laravel/20 rounded-2xl space-y-3">
+                    <div class="text-xs font-bold text-brand-laravel flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i><span>Checkpoint Kuis 1</span>
+                    </div>
+                    <p class="text-xs text-slate-300">Siapakah target utama yang paling terbantu dengan hadirnya
+                        struktur modern Laravel?</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <button onclick="checkQuizAnswer(1, true, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Developer
+                            (Web Programmer)</button>
+                        <button onclick="checkQuizAnswer(1, false, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Server
+                            Hardware Designer</button>
+                    </div>
+                    <div id="quiz-msg-1" class="hidden text-[10px] font-bold mt-1"></div>
                 </div>
             </section>
 
-            <section id="html-tags">
-                <h2>HTML Tags</h2>
-                <p>Tag umum: heading, paragraph, link, image.</p>
-                <pre><code>&lt;a href="#"&gt;Klik Saya&lt;/a&gt;</code></pre>
-                <div class="editor">
-                    <textarea class="code-input">&lt;a href="#"&gt;Klik Saya&lt;/a&gt;</textarea>
-                    <iframe class="preview"></iframe>
+            <!-- 2. SLIDE: SEJARAH LARAVEL -->
+            <section id="slide-2" class="slide-transition slide-hidden space-y-6">
+                <div
+                    class="p-6 sm:p-8 bg-gradient-to-br from-brand-cardBg to-slate-950 border border-brand-border rounded-3xl relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl"></div>
+                    <div
+                        class="flex items-center gap-3 text-yellow-500 text-xs font-bold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Modul 02 / Historis</span>
+                    </div>
+                    <h1 class="font-display font-bold text-3xl sm:text-4xl text-white">Sejarah Singkat Laravel</h1>
+                    <p class="text-sm text-brand-lightText mt-2 leading-relaxed">
+                        Bagaimana sebuah proyek hobi berkembang menjadi salah satu pilar utama ekosistem pengembangan
+                        web modern di seluruh dunia?
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-stretch">
+                    <!-- History Description -->
+                    <div class="p-5 bg-brand-cardBg/50 border border-brand-border rounded-2xl sm:col-span-8 space-y-4">
+                        <h3 class="font-bold text-white text-sm">Taylor Otwell (2011)</h3>
+                        <p class="text-xs text-brand-lightText leading-relaxed">
+                            Laravel pertama kali dikembangkan oleh **Taylor Otwell** dan dirilis secara publik pada
+                            tahun **2011**.
+                        </p>
+                        <p class="text-xs text-brand-lightText leading-relaxed">
+                            Kerangka kerja ini awalnya diciptakan sebagai solusi alternatif yang lebih bersih dan
+                            fleksibel untuk menggantikan beberapa framework PHP generasi sebelumnya yang dianggap
+                            memiliki kurva belajar yang terlalu rumit serta sintaks yang kaku.
+                        </p>
+                        <p class="text-xs text-brand-lightText leading-relaxed">
+                            Taylor ingin menghadirkan framework dengan kesederhanaan menulis kode (*expressive syntax*)
+                            yang dilengkapi dengan buku panduan dokumentasi yang rapi dan menyenangkan bagi semua level
+                            pemrogram.
+                        </p>
+                    </div>
+
+                    <!-- Creator Card Analog -->
+                    <div
+                        class="p-5 bg-brand-cardBg/30 border border-brand-border rounded-2xl sm:col-span-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <span
+                                class="text-[9px] bg-yellow-500/10 text-yellow-500 font-bold px-2 py-1 rounded font-mono">FAKTA
+                                UTAMA</span>
+                            <h4 class="font-bold text-xs text-slate-200 pt-2">Taylor Otwell</h4>
+                            <p class="text-[10px] text-brand-lightText leading-relaxed">Pencipta & pimpinan utama desain
+                                arsitektur framework Laravel dari versi 1 hingga versi modern hari ini.</p>
+                        </div>
+                        <div class="text-[10px] text-brand-accentCyan font-bold mt-4"><i
+                                class="fa-solid fa-calendar mr-1"></i>Tahun Rilis: 2011</div>
+                    </div>
+                </div>
+
+                <!-- Quiz Checkpoint 2 -->
+                <div class="p-5 bg-yellow-500/5 border border-yellow-500/20 rounded-2xl space-y-3">
+                    <div class="text-xs font-bold text-yellow-500 flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i><span>Checkpoint Kuis 2</span>
+                    </div>
+                    <p class="text-xs text-slate-300">Pada tahun berapakah framework Laravel pertama kali dirilis secara
+                        publik?</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <button onclick="checkQuizAnswer(2, false, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Tahun
+                            2008</button>
+                        <button onclick="checkQuizAnswer(2, true, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Tahun
+                            2011</button>
+                    </div>
+                    <div id="quiz-msg-2" class="hidden text-[10px] font-bold mt-1"></div>
                 </div>
             </section>
 
-            <section id="lists">
-                <h2>HTML Lists</h2>
-                <p>Membuat daftar berurutan dan tidak berurutan.</p>
-                <pre><code>&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;</code></pre>
-                <div class="editor"><textarea
-                        class="code-input">&lt;ul&gt;&lt;li&gt;Apel&lt;/li&gt;&lt;li&gt;Mangga&lt;/li&gt;&lt;/ul&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="tables">
-                <h2>HTML Tables</h2>
-                <p>Tabel digunakan menampilkan data.</p>
-                <pre><code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;A&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code></pre>
-                <div class="editor"><textarea
-                        class="code-input">&lt;table border='1'&gt;&lt;tr&gt;&lt;td&gt;A&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="forms">
-                <h2>HTML Forms</h2>
-                <p>Form untuk input data user.</p>
-                <pre><code>&lt;input placeholder='Nama'&gt;</code></pre>
-                <div class="editor"><textarea
-                        class="code-input">&lt;input placeholder='Nama'&gt; &lt;button&gt;Kirim&lt;/button&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="semantic">
-                <h2>Semantic HTML</h2>
-                <p>Gunakan header, main, footer.</p>
-                <pre><code>&lt;header&gt;Header&lt;/header&gt;</code></pre>
-                <div class="editor"><textarea
-                        class="code-input">&lt;header&gt;Header&lt;/header&gt;&lt;main&gt;Content&lt;/main&gt;&lt;footer&gt;Footer&lt;/footer&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="media">
-                <h2>HTML Media</h2>
-                <p>Tambahkan audio dan video.</p>
-                <pre><code>&lt;video controls&gt;&lt;/video&gt;</code></pre>
-                <div class="editor"><textarea
-                        class="code-input">&lt;video controls width='220'&gt;&lt;/video&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="css-selectors">
-                <h2>CSS Selectors</h2>
-                <p>Gunakan selector untuk memilih elemen.</p>
-                <pre><code>&lt;style&gt;h1{color:tomato;}&lt;/style&gt;
-&lt;h1&gt;Judul&lt;/h1&gt;</code></pre>
-                <div class="editor">
-                    <textarea class="code-input">&lt;style&gt;h1{color:tomato;}&lt;/style&gt;
-&lt;h1&gt;Judul&lt;/h1&gt;</textarea>
-                    <iframe class="preview"></iframe>
+            <!-- 3. SLIDE: TUJUAN LARAVEL -->
+            <section id="slide-3" class="slide-transition slide-hidden space-y-6">
+                <div
+                    class="p-6 sm:p-8 bg-gradient-to-br from-brand-cardBg to-slate-950 border border-brand-border rounded-3xl relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-accentCyan/10 rounded-full blur-3xl"></div>
+                    <div
+                        class="flex items-center gap-3 text-brand-accentCyan text-xs font-bold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <span>Modul 03 / Filosofi</span>
+                    </div>
+                    <h1 class="font-display font-bold text-3xl sm:text-4xl text-white">Tujuan Dibuatnya Laravel</h1>
+                    <p class="text-sm text-brand-lightText mt-2 leading-relaxed">
+                        Laravel bukan hanya tentang mempermudah penulisan baris kode, melainkan tentang menyederhanakan
+                        alur kerja agar pengembang dapat fokus pada kreativitas produk.
+                    </p>
+                </div>
+
+                <!-- Goals Detail Boxes -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-5 bg-slate-950/40 border border-brand-border rounded-2xl flex flex-col gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">Akselerasi Pengoperasian</h4>
+                        <p class="text-xs text-brand-lightText leading-relaxed">Mengurangi penulisan baris kode yang
+                            berulang agar proses perampungan website berjalan jauh lebih cepat.</p>
+                    </div>
+
+                    <div class="p-5 bg-slate-950/40 border border-brand-border rounded-2xl flex flex-col gap-3">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-brand-accentCyan/10 flex items-center justify-center text-brand-accentCyan">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">Keamanan Tingkat Tinggi</h4>
+                        <p class="text-xs text-brand-lightText leading-relaxed">Perlindungan bawaan dari SQL Injection,
+                            Cross-Site Scripting (XSS), dan pemalsuan request CSRF.</p>
+                    </div>
+
+                    <div class="p-5 bg-slate-950/40 border border-brand-border rounded-2xl flex flex-col gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">Kemudahan Pemeliharaan</h4>
+                        <p class="text-xs text-brand-lightText leading-relaxed">Struktur kode yang seragam memudahkan
+                            tim baru untuk melanjutkan pemeliharaan di masa mendatang.</p>
+                    </div>
+                </div>
+
+                <!-- Core Quote Card -->
+                <div
+                    class="p-6 bg-brand-cardBg/60 border border-brand-border rounded-2xl text-center space-y-2 relative">
+                    <span class="text-4xl text-brand-laravel/40 font-display absolute left-4 top-2">“</span>
+                    <h3 class="font-display font-bold text-base sm:text-lg text-white">Write Less, Do More</h3>
+                    <p class="text-xs text-brand-lightText max-w-lg mx-auto">Tulis baris kode sekedarnya untuk memicu
+                        hasil fungsional yang sebesar-besarnya di balik layar.</p>
+                </div>
+
+                <!-- Quiz Checkpoint 3 -->
+                <div class="p-5 bg-brand-accentCyan/5 border border-brand-accentCyan/20 rounded-2xl space-y-3">
+                    <div class="text-xs font-bold text-brand-accentCyan flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i><span>Checkpoint Kuis 3</span>
+                    </div>
+                    <p class="text-xs text-slate-300">Manakah yang termasuk ke dalam salah satu filosofi utama
+                        perancangan Laravel?</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <button onclick="checkQuizAnswer(3, true, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Write
+                            Less, Do More</button>
+                        <button onclick="checkQuizAnswer(3, false, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Write
+                            More, Do Less</button>
+                    </div>
+                    <div id="quiz-msg-3" class="hidden text-[10px] font-bold mt-1"></div>
                 </div>
             </section>
 
-            <section id="colors">
-                <h2>CSS Colors</h2>
-                <p>Atur warna elemen.</p>
-                <pre><code>&lt;style&gt;h1{color:red}&lt;/style&gt;</code></pre>
-                <div class="editor"><textarea
-                        class="code-input">&lt;style&gt;h1{color:red}&lt;/style&gt;&lt;h1&gt;Hello&lt;/h1&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="box-model">
-                <h2>Box Model</h2>
-                <p>Margin, border, padding.</p>
-                <pre><code>padding:20px;</code></pre>
-                <div class="editor"><textarea
-                        class="code-input">&lt;style&gt;div{padding:20px;background:#f59e0b}&lt;/style&gt;&lt;div&gt;Box&lt;/div&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="position">
-                <h2>CSS Position</h2>
-                <p>Relative dan absolute.</p>
-                <pre><code>position:relative;</code></pre>
-                <div class="editor"><textarea
-                        class="code-input">&lt;style&gt;div{position:relative;left:30px;background:#0ea5e9;color:#fff;padding:20px}&lt;/style&gt;&lt;div&gt;Move&lt;/div&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="flexbox">
-                <h2>Flexbox</h2>
-                <p>Flexbox memudahkan layout horizontal dan vertikal.</p>
-                <pre><code>&lt;style&gt;.wrap{display:flex;gap:10px}.box{background:#0ea5e9;color:#fff;padding:20px}&lt;/style&gt;</code></pre>
-                <div class="editor">
-                    <textarea class="code-input">&lt;style&gt;.wrap{display:flex;gap:10px}.box{background:#0ea5e9;color:#fff;padding:20px}&lt;/style&gt;
-&lt;div class='wrap'&gt;&lt;div class='box'&gt;1&lt;/div&gt;&lt;div class='box'&gt;2&lt;/div&gt;&lt;/div&gt;</textarea>
-                    <iframe class="preview"></iframe>
+            <!-- 4. SLIDE: KONSEP FRAMEWORK -->
+            <section id="slide-4" class="slide-transition slide-hidden space-y-6">
+                <div
+                    class="p-6 sm:p-8 bg-gradient-to-br from-brand-cardBg to-slate-950 border border-brand-border rounded-3xl relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl"></div>
+                    <div
+                        class="flex items-center gap-3 text-green-400 text-xs font-bold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Modul 04 / Dasar Teori</span>
+                    </div>
+                    <h1 class="font-display font-bold text-3xl sm:text-4xl text-white">Apa Itu Framework?</h1>
+                    <p class="text-sm text-brand-lightText mt-2 leading-relaxed">
+                        Memahami perbedaan mendasar saat menulis kode aplikasi web menggunakan cara mentah (*raw*) vs
+                        terstruktur menggunakan kerangka kerja (*framework*).
+                    </p>
+                </div>
+
+                <!-- Analogy Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Tanpa Framework -->
+                    <div class="p-5 bg-red-500/5 border border-red-500/20 rounded-2xl space-y-3">
+                        <div class="flex items-center gap-2 text-red-400 font-bold text-xs">
+                            <i class="fa-solid fa-circle-xmark"></i><span>Coding Tanpa Framework</span>
+                        </div>
+                        <p class="text-xs text-brand-lightText leading-relaxed">
+                            Programmer wajib merancang sistem routing, membuat modul koneksi database manual, menyusun
+                            aturan keamanan, dan menata berkas file dari nol secara berulang-ulang untuk setiap proyek
+                            baru.
+                        </p>
+                    </div>
+
+                    <!-- Dengan Framework -->
+                    <div class="p-5 bg-green-500/5 border border-green-500/20 rounded-2xl space-y-3">
+                        <div class="flex items-center gap-2 text-green-400 font-bold text-xs">
+                            <i class="fa-solid fa-circle-check"></i><span>Coding Dengan Framework</span>
+                        </div>
+                        <p class="text-xs text-brand-lightText leading-relaxed">
+                            Sistem inti telah tersedia rapi. Programmer bisa langsung memfokuskan energi mereka untuk
+                            mengembangkan logika bisnis utama dan fitur-fitur yang diinginkan pengguna.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Analogy House Construction -->
+                <div
+                    class="p-5 bg-brand-cardBg/50 border border-brand-border rounded-2xl flex flex-col sm:flex-row items-center gap-6">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-yellow-500/15 flex items-center justify-center text-yellow-500 shrink-0">
+                        <i class="fa-solid fa-house-chimney text-xl"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-white text-sm">Analogi Kerangka Bangunan</h4>
+                        <p class="text-xs text-brand-lightText leading-relaxed">
+                            Framework diibaratkan sebagai **kerangka dasar struktur rumah** yang sudah kokoh terpasang.
+                            Anda tidak perlu membuat pondasi semen dan kayu penyangga tiang dari awal; Anda tinggal
+                            menentukan jenis ubin, warna cat, dan mebel untuk mempercantik rumah tersebut.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quiz Checkpoint 4 -->
+                <div class="p-5 bg-green-500/5 border border-green-500/20 rounded-2xl space-y-3">
+                    <div class="text-xs font-bold text-green-400 flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i><span>Checkpoint Kuis 4</span>
+                    </div>
+                    <p class="text-xs text-slate-300">Apa fokus utama programmer ketika memanfaatkan bantuan kerangka
+                        kerja (framework)?</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <button onclick="checkQuizAnswer(4, true, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Logika
+                            bisnis dan fitur fungsional aplikasi</button>
+                        <button onclick="checkQuizAnswer(4, false, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Menulis
+                            kode koneksi socket manual dari nol</button>
+                    </div>
+                    <div id="quiz-msg-4" class="hidden text-[10px] font-bold mt-1"></div>
                 </div>
             </section>
-            <section id="grid">
-                <h2>CSS Grid</h2>
-                <p>Layout berbasis kolom.</p>
-                <div class="editor"><textarea
-                        class="code-input">&lt;style&gt;.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}.b{background:#8b5cf6;color:#fff;padding:20px}&lt;/style&gt;&lt;div class='g'&gt;&lt;div class='b'&gt;1&lt;/div&gt;&lt;div class='b'&gt;2&lt;/div&gt;&lt;/div&gt;</textarea><iframe
-                        class="preview"></iframe></div>
-            </section>
-            <section id="responsive">
-                <h2>Responsive Design</h2>
-                <p>Gunakan media query.</p>
-                <div class="editor"><textarea
-                        class="code-input">&lt;style&gt;div{background:green;padding:20px}@media(max-width:600px){div{background:red}}&lt;/style&gt;&lt;div&gt;Resize Screen&lt;/div&gt;</textarea><iframe
-                        class="preview"></iframe></div>
+
+            <!-- 5. SLIDE: ARSITEKTUR MVC -->
+            <section id="slide-5" class="slide-transition slide-hidden space-y-6">
+                <div
+                    class="p-6 sm:p-8 bg-gradient-to-br from-brand-cardBg to-slate-950 border border-brand-border rounded-3xl relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
+                    <div class="flex items-center gap-3 text-blue-400 text-xs font-bold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-sitemap"></i>
+                        <span>Modul 05 / Arsitektur</span>
+                    </div>
+                    <h1 class="font-display font-bold text-3xl sm:text-4xl text-white">Arsitektur MVC</h1>
+                    <p class="text-sm text-brand-lightText mt-2 leading-relaxed">
+                        Laravel mengandalkan arsitektur **Model-View-Controller (MVC)** untuk memisahkan logika data,
+                        antarmuka pengguna, dan penengah instruksi aplikasi.
+                    </p>
+                </div>
+
+                <!-- MVC Definitions -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Model -->
+                    <div class="p-5 bg-brand-cardBg/50 border border-brand-border rounded-2xl space-y-2">
+                        <div class="flex items-center gap-2 text-red-400 font-bold text-sm">
+                            <span
+                                class="w-6 h-6 rounded-md bg-red-500/10 flex items-center justify-center text-xs">M</span>
+                            <span>Model</span>
+                        </div>
+                        <p class="text-[11px] text-brand-lightText leading-relaxed">
+                            Mengatur pengelolaan komunikasi data langsung dengan basis data (*database*). Seperti
+                            menyimpan, mengubah, mengambil, dan menghapus catatan data.
+                        </p>
+                        <span
+                            class="inline-block text-[9px] bg-slate-900 text-slate-300 px-2 py-0.5 rounded font-mono font-bold">Analogi:
+                            Petugas Gudang</span>
+                    </div>
+
+                    <!-- View -->
+                    <div class="p-5 bg-brand-cardBg/50 border border-brand-border rounded-2xl space-y-2">
+                        <div class="flex items-center gap-2 text-green-400 font-bold text-sm">
+                            <span
+                                class="w-6 h-6 rounded-md bg-green-500/10 flex items-center justify-center text-xs">V</span>
+                            <span>View</span>
+                        </div>
+                        <p class="text-[11px] text-brand-lightText leading-relaxed">
+                            Bertanggung jawab terhadap seluruh struktur tampilan antarmuka visual yang dilihat dan
+                            diinteraksikan langsung oleh pengguna (*user*).
+                        </p>
+                        <span
+                            class="inline-block text-[9px] bg-slate-900 text-slate-300 px-2 py-0.5 rounded font-mono font-bold">Analogi:
+                            Layar/Etalase</span>
+                    </div>
+
+                    <!-- Controller -->
+                    <div class="p-5 bg-brand-cardBg/50 border border-brand-border rounded-2xl space-y-2">
+                        <div class="flex items-center gap-2 text-blue-400 font-bold text-sm">
+                            <span
+                                class="w-6 h-6 rounded-md bg-blue-500/10 flex items-center justify-center text-xs">C</span>
+                            <span>Controller</span>
+                        </div>
+                        <p class="text-[11px] text-brand-lightText leading-relaxed">
+                            Penghubung lalu lintas utama. Menerima masukan permintaan dari pengguna, memproses logika,
+                            mengoordinasikannya ke Model, lalu mengirim hasilnya ke View.
+                        </p>
+                        <span
+                            class="inline-block text-[9px] bg-slate-900 text-slate-300 px-2 py-0.5 rounded font-mono font-bold">Analogi:
+                            Pelayan Restoran</span>
+                    </div>
+                </div>
+
+                <!-- Workflow Diagram -->
+                <div class="p-5 bg-slate-950/40 border border-brand-border rounded-2xl space-y-4">
+                    <h4 class="font-bold text-xs uppercase text-slate-300 tracking-wider">Simulasi Langkah Alur Kerja
+                        MVC</h4>
+                    <!-- Step visual progress items -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-[11px] text-brand-lightText">
+                        <div class="p-3 bg-slate-900/40 rounded-xl border border-slate-800">
+                            <div class="font-bold text-brand-laravel mb-1">01. Request</div>
+                            Pengguna mengakses halaman web. Masuk sebagai instruksi ke Controller.
+                        </div>
+                        <div class="p-3 bg-slate-900/40 rounded-xl border border-slate-800">
+                            <div class="font-bold text-brand-accentCyan mb-1">02. Data Fetch</div>
+                            Controller meminta catatan data yang relevan kepada Model.
+                        </div>
+                        <div class="p-3 bg-slate-900/40 rounded-xl border border-slate-800">
+                            <div class="font-bold text-yellow-500 mb-1">03. DB Query</div>
+                            Model mengambil data dari database lalu mengembalikan hasilnya ke Controller.
+                        </div>
+                        <div class="p-3 bg-slate-900/40 rounded-xl border border-slate-800">
+                            <div class="font-bold text-green-400 mb-1">04. View Render</div>
+                            Controller menyuntikkan data tersebut ke View untuk dipajang ke layar pengguna.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Checkpoint 5 -->
+                <div class="p-5 bg-blue-500/5 border border-blue-500/20 rounded-2xl space-y-3">
+                    <div class="text-xs font-bold text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i><span>Checkpoint Kuis 5</span>
+                    </div>
+                    <p class="text-xs text-slate-300">Komponen manakah dalam arsitektur MVC yang memiliki tanggung jawab
+                        tunggal untuk berinteraksi dengan database?</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <button onclick="checkQuizAnswer(5, false, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">View</button>
+                        <button onclick="checkQuizAnswer(5, true, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Model</button>
+                        <button onclick="checkQuizAnswer(5, false, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Controller</button>
+                    </div>
+                    <div id="quiz-msg-5" class="hidden text-[10px] font-bold mt-1"></div>
+                </div>
             </section>
 
-            <div class="pager">
-                <button id="prevBtn">← Previous</button>
-                <div class="dots" id="dots"></div>
-                <button id="nextBtn">Next →</button>
-            </div>
+            <!-- 6. SLIDE: KONSEP CRUD -->
+            <section id="slide-6" class="slide-transition slide-hidden space-y-6">
+                <div
+                    class="p-6 sm:p-8 bg-gradient-to-br from-brand-cardBg to-slate-950 border border-brand-border rounded-3xl relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
+                    <div
+                        class="flex items-center gap-3 text-purple-400 text-xs font-bold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-cubes-stacked"></i>
+                        <span>Modul 06 / Operasi Data</span>
+                    </div>
+                    <h1 class="font-display font-bold text-3xl sm:text-4xl text-white">Konsep CRUD</h1>
+                    <p class="text-sm text-brand-lightText mt-2 leading-relaxed">
+                        CRUD adalah empat pilar operasi dasar pengolahan data yang akan selalu Anda temui dalam
+                        pembuatan program berskala dinamis.
+                    </p>
+                </div>
+
+                <!-- CRUD Definitions Matrix -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Create -->
+                    <div
+                        class="p-4 bg-brand-cardBg/40 border border-brand-border hover:border-brand-accent/30 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span
+                                class="text-xs bg-green-500/10 text-green-400 font-bold font-mono px-2 py-0.5 rounded">C</span>
+                            <h4 class="font-bold text-white text-sm mt-3">Create</h4>
+                            <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Menambahkan catatan data
+                                baru ke dalam database.</p>
+                        </div>
+                        <span class="text-[9px] text-slate-500 italic mt-3 font-mono">Contoh: Register Akun</span>
+                    </div>
+
+                    <!-- Read -->
+                    <div
+                        class="p-4 bg-brand-cardBg/40 border border-brand-border hover:border-brand-accent/30 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span
+                                class="text-xs bg-brand-accentCyan/10 text-brand-accentCyan font-bold font-mono px-2 py-0.5 rounded">R</span>
+                            <h4 class="font-bold text-white text-sm mt-3">Read</h4>
+                            <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Mengambil atau menampilkan
+                                baris data dari database ke layar.</p>
+                        </div>
+                        <span class="text-[9px] text-slate-500 italic mt-3 font-mono">Contoh: Melihat Katalog</span>
+                    </div>
+
+                    <!-- Update -->
+                    <div
+                        class="p-4 bg-brand-cardBg/40 border border-brand-border hover:border-brand-accent/30 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span
+                                class="text-xs bg-yellow-500/10 text-yellow-500 font-bold font-mono px-2 py-0.5 rounded">U</span>
+                            <h4 class="font-bold text-white text-sm mt-3">Update</h4>
+                            <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Mengubah atau memperbarui
+                                nilai data yang sudah tersimpan sebelumnya.</p>
+                        </div>
+                        <span class="text-[9px] text-slate-500 italic mt-3 font-mono">Contoh: Edit Profil</span>
+                    </div>
+
+                    <!-- Delete -->
+                    <div
+                        class="p-4 bg-brand-cardBg/40 border border-brand-border hover:border-brand-accent/30 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <span
+                                class="text-xs bg-red-500/10 text-red-400 font-bold font-mono px-2 py-0.5 rounded">D</span>
+                            <h4 class="font-bold text-white text-sm mt-3">Delete</h4>
+                            <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Menghapus baris atau
+                                catatan data tertentu secara permanen dari database.</p>
+                        </div>
+                        <span class="text-[9px] text-slate-500 italic mt-3 font-mono">Contoh: Hapus Postingan</span>
+                    </div>
+                </div>
+
+                <!-- Library analogy table -->
+                <div class="p-5 bg-slate-950/40 border border-brand-border rounded-2xl space-y-3">
+                    <h4 class="font-bold text-xs uppercase text-slate-300 tracking-wider">Ilustrasi Kasus Aplikasi
+                        Perpustakaan</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-[10px]">
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800"><span
+                                class="text-green-400 block font-bold">CREATE</span> Input Buku Baru</div>
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800"><span
+                                class="text-brand-accentCyan block font-bold">READ</span> Tampil Katalog Buku</div>
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800"><span
+                                class="text-yellow-500 block font-bold">UPDATE</span> Edit Nama Pengarang</div>
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800"><span
+                                class="text-red-400 block font-bold">DELETE</span> Hapus Buku Hilang</div>
+                    </div>
+                </div>
+
+                <!-- Quiz Checkpoint 6 -->
+                <div class="p-5 bg-purple-500/5 border border-purple-500/20 rounded-2xl space-y-3">
+                    <div class="text-xs font-bold text-purple-400 flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i><span>Checkpoint Kuis 6</span>
+                    </div>
+                    <p class="text-xs text-slate-300">Operasi dasar manakah dalam CRUD yang dipicu ketika pengguna
+                        memperbarui status pesanan mereka dari "Pending" ke "Paid"?</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <button onclick="checkQuizAnswer(6, false, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Create</button>
+                        <button onclick="checkQuizAnswer(6, false, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Read</button>
+                        <button onclick="checkQuizAnswer(6, true, this)"
+                            class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors">Update</button>
+                    </div>
+                    <div id="quiz-msg-6" class="hidden text-[10px] font-bold mt-1"></div>
+                </div>
+            </section>
+
+            <!-- 7. SLIDE: PERSIAPAN & INSTALASI -->
+            <section id="slide-7" class="slide-transition slide-hidden space-y-6">
+                <div
+                    class="p-6 sm:p-8 bg-gradient-to-br from-brand-cardBg to-slate-950 border border-brand-border rounded-3xl relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                    <div
+                        class="flex items-center gap-3 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-terminal"></i>
+                        <span>Modul 07 / Praktikum</span>
+                    </div>
+                    <h1 class="font-display font-bold text-3xl sm:text-4xl text-white">Instalasi & Persiapan Proyek</h1>
+                    <p class="text-sm text-brand-lightText mt-2 leading-relaxed">
+                        Langkah-langkah taktis dan spesifikasi perangkat lunak yang perlu dipersiapkan untuk memulai
+                        proyek Laravel 12 pertama Anda.
+                    </p>
+                </div>
+
+                <!-- Software requirements table -->
+                <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                    <div class="p-4 bg-slate-950/40 border border-brand-border rounded-xl">
+                        <div class="text-[10px] font-bold text-slate-400 font-mono">01. MANAGER</div>
+                        <h4 class="font-bold text-white text-xs mt-1">Composer</h4>
+                        <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Pengelola pustaka (*dependency
+                            manager*) untuk PHP.</p>
+                    </div>
+                    <div class="p-4 bg-slate-950/40 border border-brand-border rounded-xl">
+                        <div class="text-[10px] font-bold text-slate-400 font-mono">02. SERVER</div>
+                        <h4 class="font-bold text-white text-xs mt-1">Laragon</h4>
+                        <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Menyediakan paket terpadu Web
+                            Server, PHP, & MySQL.</p>
+                    </div>
+                    <div class="p-4 bg-slate-950/40 border border-brand-border rounded-xl">
+                        <div class="text-[10px] font-bold text-slate-400 font-mono">03. ENGINE</div>
+                        <h4 class="font-bold text-white text-xs mt-1">PHP 8.2 - 8.4</h4>
+                        <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Mesin utama untuk mengompilasi
+                            sistem Laravel modern.</p>
+                    </div>
+                    <div class="p-4 bg-slate-950/40 border border-brand-border rounded-xl">
+                        <div class="text-[10px] font-bold text-slate-400 font-mono">04. FRONTEND</div>
+                        <h4 class="font-bold text-white text-xs mt-1">Node.js</h4>
+                        <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Digunakan untuk meluncurkan
+                            aset visual lewat Vite.</p>
+                    </div>
+                    <div class="p-4 bg-slate-950/40 border border-brand-border rounded-xl">
+                        <div class="text-[10px] font-bold text-slate-400 font-mono">05. EDITOR</div>
+                        <h4 class="font-bold text-white text-xs mt-1">VS Code</h4>
+                        <p class="text-[10px] text-brand-lightText leading-relaxed mt-1">Penyunting baris kode program
+                            utama Anda.</p>
+                    </div>
+                </div>
+
+                <!-- Code installation console boxes with copy triggers -->
+                <div class="space-y-4">
+
+                    <!-- Command 1: Create project -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-300">1. Jalankan perintah di Terminal untuk membuat
+                            proyek baru:</label>
+                        <div
+                            class="bg-slate-950 rounded-2xl p-4 border border-brand-border flex items-center justify-between font-mono text-xs text-brand-accentCyan overflow-x-auto gap-4">
+                            <span id="cmd-1">composer create-project laravel/laravel himasi-bootcamp</span>
+                            <button onclick="copyCommand('cmd-1')"
+                                class="px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-brand-accentCyan rounded-lg text-[10px] font-bold text-white transition-all shrink-0">
+                                <i class="fa-regular fa-copy mr-1"></i>Salin
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Command 2: Serve project -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-300">2. Masuk ke folder proyek, lalu aktifkan server
+                            lokal:</label>
+                        <div
+                            class="bg-slate-950 rounded-2xl p-4 border border-brand-border flex items-center justify-between font-mono text-xs text-brand-accentCyan overflow-x-auto gap-4">
+                            <span id="cmd-2">cd himasi-bootcamp && php artisan serve</span>
+                            <button onclick="copyCommand('cmd-2')"
+                                class="px-3 py-1.5 bg-slate-900 border border-slate-800 hover:border-brand-accentCyan rounded-lg text-[10px] font-bold text-white transition-all shrink-0">
+                                <i class="fa-regular fa-copy mr-1"></i>Salin
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Action / Terminal Output Preview -->
+                <div
+                    class="p-5 bg-slate-950 border border-brand-border rounded-2xl font-mono text-[11px] text-emerald-400 space-y-1">
+                    <p class="text-slate-500">// Output di terminal jika server berhasil menyala:</p>
+                    <p>INFO Server running on: http://127.0.0.1:8000</p>
+                    <p class="text-slate-500 mt-2">Buka tautan http://127.0.0.1:8000 di browser untuk melihat halaman
+                        selamat datang Laravel.</p>
+                </div>
+            </section>
+
+            <!-- 8. SLIDE: KESIMPULAN & UCAPAN TERIMA KASIH (NEW!) -->
+            <section id="slide-8" class="slide-transition slide-hidden space-y-6">
+                <!-- Header Card -->
+                <div
+                    class="p-6 sm:p-8 bg-gradient-to-br from-brand-cardBg to-slate-950 border border-brand-border rounded-3xl relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-laravel/10 rounded-full blur-3xl"></div>
+                    <div
+                        class="flex items-center gap-3 text-brand-laravel text-xs font-bold uppercase tracking-widest mb-3">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                        <span>Modul 08 / Selesai</span>
+                    </div>
+                    <h1 class="font-display font-bold text-3xl sm:text-4xl text-white">Rangkuman Sesi & Penutup</h1>
+                    <p class="text-sm text-brand-lightText mt-2 leading-relaxed">
+                        Selamat! Anda telah menyelesaikan seluruh rangkaian materi fondasi dasar pengembangan web
+                        menggunakan Laravel di pertemuan pertama ini.
+                    </p>
+                </div>
+
+                <!-- Summary Checklist Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-5 bg-brand-cardBg/50 border border-brand-border rounded-2xl">
+                        <h3 class="font-bold text-white text-sm mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-compass text-brand-laravel"></i>
+                            <span>Poin Penting yang Kita Pelajari</span>
+                        </h3>
+                        <ul class="space-y-3 text-xs text-brand-lightText leading-relaxed">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-green-500 mt-0.5"></i>
+                                <span><strong>Filosofi Modern:</strong> "Write Less, Do More" memangkas penulisan kode
+                                    berulang demi fungsionalitas maksimal.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-green-500 mt-0.5"></i>
+                                <span><strong>Arsitektur MVC:</strong> Pemisahan fungsionalitas mutlak antara data
+                                    (Model), tampilan (View), dan penengah (Controller).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-green-500 mt-0.5"></i>
+                                <span><strong>Fondasi CRUD:</strong> Create, Read, Update, dan Delete adalah pilar
+                                    rekayasa perangkat lunak berbasis database.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Next Step Card -->
+                    <div
+                        class="p-5 bg-brand-cardBg/30 border border-brand-border rounded-2xl flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <h3 class="font-bold text-white text-sm flex items-center gap-2">
+                                <i class="fa-solid fa-forward-step text-brand-accentCyan"></i>
+                                <span>Langkah Kita Selanjutnya</span>
+                            </h3>
+                            <p class="text-xs text-brand-lightText leading-relaxed">
+                                Di pertemuan ke-2 berikutnya, kita akan mulai merancang basis data relasional riil,
+                                membuat modul kontroler, serta mempraktikkan proses manipulasi data CRUD secara langsung
+                                pada project Laravel Anda.
+                            </p>
+                        </div>
+                        <div class="text-[10px] text-brand-accentCyan font-mono mt-4">
+                            <i class="fa-solid fa-circle-exclamation mr-1"></i>Pastikan seluruh perangkat lunak (PHP,
+                            Composer, Laragon) sudah berjalan lancar di komputer Anda!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beautiful Thank You banner with glowing hover -->
+                <div
+                    class="p-8 bg-gradient-to-r from-red-950/40 via-brand-darkBg to-slate-950 border border-brand-border rounded-3xl text-center space-y-4 shadow-2xl relative overflow-hidden">
+                    <div class="absolute -top-10 -left-10 w-32 h-32 bg-brand-laravel/10 rounded-full blur-2xl"></div>
+                    <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-brand-accentCyan/10 rounded-full blur-2xl">
+                    </div>
+
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-white tracking-wide">TERIMA KASIH!
+                    </h2>
+                    <p class="text-xs sm:text-sm text-brand-lightText max-w-xl mx-auto leading-relaxed">
+                        Terima kasih telah berpartisipasi aktif dalam sesi materi pertama ini. Semangat belajar Anda
+                        adalah kunci utama kesuksesan Bootcamp HIMASI 2026.
+                    </p>
+                    <div class="pt-2">
+                        <span
+                            class="inline-block bg-brand-laravel/10 border border-brand-laravel/30 text-brand-laravel text-xs font-bold font-mono px-4 py-2 rounded-full uppercase tracking-widest">
+                            "Building Strong Foundations for Future Developers"
+                        </span>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
+
+    <!-- FLOATING NAV BAR PREV / NEXT -->
+    <div class="sticky bottom-0 bg-brand-darkBg/95 backdrop-blur-md border-t border-brand-border py-4 px-4 z-40">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <button id="prev-btn" onclick="prevSlide()"
+                class="px-5 py-3 bg-slate-900 border border-brand-border hover:border-brand-laravel/40 rounded-xl text-xs font-bold transition-all text-slate-300 disabled:opacity-40 disabled:pointer-events-none flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i><span>Sebelumnya</span>
+            </button>
+            <span id="slide-indicator" class="text-xs font-semibold text-brand-lightText">Modul 1 / 8</span>
+            <button id="next-btn" onclick="nextSlide()"
+                class="px-5 py-3 bg-gradient-to-r from-brand-laravel to-red-500 hover:opacity-95 rounded-xl text-xs font-bold transition-all text-white flex items-center gap-2">
+                <span>Selanjutnya</span><i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast"
+        class="fixed bottom-24 right-6 z-50 bg-slate-900 border border-brand-border p-4 rounded-xl shadow-2xl translate-y-20 opacity-0 transition-all duration-300 flex items-start gap-3 max-w-xs">
+        <div
+            class="w-8 h-8 rounded-full bg-brand-accentCyan/10 flex items-center justify-center text-brand-accentCyan shrink-0">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div>
+            <h4 class="font-bold text-slate-100 text-xs">Pesan Sistem</h4>
+            <p id="toast-text" class="text-[10px] text-brand-lightText mt-1">Perintah tersalin ke papan klip.</p>
+        </div>
+    </div>
+
+    <!-- MAIN FOOTER -->
+    <footer class="bg-slate-950 border-t border-brand-border/40 py-5 text-center text-[11px] text-brand-lightText">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 px-4">
+            <p>HIMASI BOOTCAMP 2026 - Laravel & Database Fundamentals</p>
+            <p class="text-slate-500">"Building Strong Foundations for Future Developers"</p>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE SPA ROUTER SCRIPTS -->
     <script>
-        const menuBtn = document.getElementById('menuBtn');
-        const sidebar = document.getElementById('sidebar');
-        menuBtn.addEventListener('click', () => sidebar.classList.toggle('show'));
+        let currentSlide = 1;
+        const totalSlides = 8; // Bertambah menjadi 8 modul
 
-        // Carousel functionality
-        const sections = document.querySelectorAll('.content section');
-        const dotsContainer = document.getElementById('dots');
-        let current = 0;
+        // Initialize view
+        goToSlide(currentSlide);
 
-        // Create dots for each section
-        sections.forEach((_, i) => {
-            const dot = document.createElement('span');
-            dot.className = 'dot';
-            if (i === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goTo(i));
-            dot.addEventListener('mouseenter', () => dot.classList.add('hover'));
-            dot.addEventListener('mouseleave', () => dot.classList.remove('hover'));
-            dotsContainer.appendChild(dot);
-        });
+        // Slide Router Mechanism
+        function goToSlide(slideIndex) {
+            if (slideIndex < 1 || slideIndex > totalSlides) return;
+            currentSlide = slideIndex;
 
-        function showSection(index) {
-            sections.forEach((section, i) => {
-                section.classList.toggle('active', i === index);
-            });
-            document.querySelectorAll('.dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+            // Hide all slides & update active navigation state
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                const btn = document.getElementById(`btn-slide-${i}`);
+
+                if (slide) {
+                    if (i === slideIndex) {
+                        slide.classList.remove('slide-hidden');
+                        slide.classList.add('slide-active');
+                    } else {
+                        slide.classList.remove('slide-active');
+                        slide.classList.add('slide-hidden');
+                    }
+                }
+
+                if (btn) {
+                    if (i === slideIndex) {
+                        btn.classList.add('sidebar-active');
+                    } else {
+                        btn.classList.remove('sidebar-active');
+                    }
+                }
+            }
+
+            // Update UI Counters & Indicators
+            document.getElementById('slide-indicator').innerText = `Modul ${currentSlide} / ${totalSlides}`;
+            document.getElementById('progress-text').innerText = `Modul ${currentSlide} dari ${totalSlides}`;
+
+            // Calculate Progress Bar Percent
+            const percent = (currentSlide / totalSlides) * 100;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+
+            // Prev & Next Buttons state protection
+            document.getElementById('prev-btn').disabled = (currentSlide === 1);
+
+            // Change "Selanjutnya" to "Selesai" on final slide
+            const nextBtn = document.getElementById('next-btn');
+            if (currentSlide === totalSlides) {
+                nextBtn.innerHTML = `<span>Selesai Belajar</span> <i class="fa-solid fa-flag-checkered"></i>`;
+            } else {
+                nextBtn.innerHTML = `<span>Selanjutnya</span> <i class="fa-solid fa-arrow-right"></i>`;
+            }
+
+            // Scroll container top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function goTo(i) {
-            if (i < 0 || i >= sections.length) return;
-            current = i;
-            showSection(current);
-            // Update sidebar active state
-            document.querySelectorAll('.sidebar a').forEach((a, idx) => {
-                a.classList.toggle('active', idx === current);
-            });
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                goToSlide(currentSlide + 1);
+            } else {
+                // Completed action
+                showToast("Selamat! Anda telah menyelesaikan seluruh materi Pertemuan 1.");
+            }
         }
 
-        showSection(0);
+        function prevSlide() {
+            if (currentSlide > 1) {
+                goToSlide(currentSlide - 1);
+            }
+        }
 
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        // Mobile Sidebar Drawer Toggle
+        function toggleSidebarMobile() {
+            const sidebar = document.getElementById('sidebar-nav');
+            const icon = document.getElementById('sidebar-mobile-icon');
+            if (sidebar.classList.contains('hidden')) {
+                sidebar.classList.remove('hidden');
+                sidebar.classList.add('block', 'fixed', 'inset-x-0', 'bg-brand-darkBg');
+                icon.className = 'fa-solid fa-xmark text-sm';
+            } else {
+                sidebar.classList.add('hidden');
+                sidebar.classList.remove('block', 'fixed', 'inset-x-0', 'bg-brand-darkBg');
+                icon.className = 'fa-solid fa-list-ul text-sm';
+            }
+        }
 
-        // Editor functionality with Run Code and Clear buttons
-        document.querySelectorAll('.editor').forEach(box => {
-            const input = box.querySelector('.code-input');
-            const frame = box.querySelector('.preview');
+        // Mini Quiz Verification Logic
+        function checkQuizAnswer(quizNum, isCorrect, btnElement) {
+            const msgBox = document.getElementById(`quiz-msg-${quizNum}`);
+            msgBox.classList.remove('hidden');
 
-            // Add buttons to editor
-            const btnContainer = document.createElement('div');
-            btnContainer.className = 'editor-buttons';
-
-            const runBtn = document.createElement('button');
-            runBtn.className = 'run-btn';
-            runBtn.textContent = '▶ Run Code';
-            runBtn.addEventListener('click', () => frame.srcdoc = input.value);
-
-            const clearBtn = document.createElement('button');
-            clearBtn.className = 'clear-btn';
-            clearBtn.textContent = '✕ Clear';
-            clearBtn.addEventListener('click', () => {
-                input.value = '';
-                frame.srcdoc = '';
+            // Reset sibling buttons styling
+            const buttons = btnElement.parentNode.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.className = "px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[11px] rounded-lg border border-slate-800 transition-colors text-white";
             });
 
-            btnContainer.appendChild(runBtn);
-            btnContainer.appendChild(clearBtn);
-            box.insertBefore(btnContainer, box.firstChild);
+            if (isCorrect) {
+                btnElement.className = "px-4 py-2 bg-green-500/10 hover:bg-green-500/20 text-[11px] rounded-lg border border-green-500/50 text-green-400 font-bold transition-all";
+                msgBox.innerText = "✓ Jawaban Anda benar! Luar biasa.";
+                msgBox.className = "block text-[10px] font-bold mt-1 text-green-400";
+            } else {
+                btnElement.className = "px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-[11px] rounded-lg border border-red-500/50 text-red-400 font-bold transition-all";
+                msgBox.innerText = "✗ Jawaban kurang tepat. Silakan ulas kembali materi di atas.";
+                msgBox.className = "block text-[10px] font-bold mt-1 text-red-400";
+            }
+        }
 
-            // Initial render
-            frame.srcdoc = input.value;
+        // Copy Terminal Commands Utility
+        function copyCommand(elementId) {
+            const commandText = document.getElementById(elementId).innerText;
 
-            // Update preview on input
-            input.addEventListener('input', () => frame.srcdoc = input.value);
-        });
+            // Modern copy to clipboard approach
+            const tempInput = document.createElement("input");
+            tempInput.value = commandText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
 
-        // Sidebar click handling
-        const links = [...document.querySelectorAll('.sidebar a')];
-        links.forEach((a, i) => a.addEventListener('click', (e) => {
-            e.preventDefault();
-            goTo(i);
-        }));
+            showToast("Perintah tersalin ke papan klip!");
+        }
+
+        // Toast controller
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+
+            toastText.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
     </script>
 </body>
 
